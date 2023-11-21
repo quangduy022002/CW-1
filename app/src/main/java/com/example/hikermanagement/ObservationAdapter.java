@@ -30,10 +30,6 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
 
     ObservationAdapter(Context context, List observations, String obsDate, String hikeId){
         this.context = context;
-//        this.obsId = obsId;
-//        this.obsText = obsText;
-//        this.obsTime = obsTime;
-//        this.obsComment = obsComment;
         this.observations = observations;
         this.obsDate = obsDate;
         this.hikeId = hikeId;
@@ -60,11 +56,11 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
             return observations.size();
     }
 
-    public class myViewHolderObservation extends  RecyclerView.ViewHolder {
+    public class myViewHolderObservation extends  RecyclerView.ViewHolder implements View.OnClickListener, PopupMenu.OnMenuItemClickListener  {
         TextView textTV, timeTV, commentTV, dateTV;
         ImageButton imageButton;
         LinearLayout observationLayout;
-        public myViewHolderObservation(@NonNull View itemView) {
+        public myViewHolderObservation (@NonNull View itemView)  {
             super(itemView);
             textTV = itemView.findViewById(R.id.text_txt);
             timeTV = itemView.findViewById(R.id.time_txt);
@@ -72,44 +68,45 @@ public class ObservationAdapter extends RecyclerView.Adapter<ObservationAdapter.
             dateTV = itemView.findViewById(R.id.date_txt);
 
             imageButton = itemView.findViewById(R.id.imageButtonAction);
-//            imageButton.setOnClickListener(this);
+            imageButton.setOnClickListener(this);
             observationLayout = itemView.findViewById(R.id.observationLayout);
             translate_animation = AnimationUtils.loadAnimation(context, R.anim.translate_animation);
             observationLayout.setAnimation(translate_animation);
 
         }
 
-//        @Override
-//        public void onClick(View view) {
-//            showPopupMenu(view);
-//        }
+        @Override
+        public void onClick(View view) {
+            showPopupMenu(view);
+        }
 
-//        private void showPopupMenu(View view) {
-//            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
-//            popupMenu.inflate(R.menu.popup_menu);
-//            popupMenu.setOnMenuItemClickListener(this);
-//            popupMenu.show();
-//        }
+        private void showPopupMenu(View view) {
+            PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+            popupMenu.inflate(R.menu.popup_menu);
+            popupMenu.setOnMenuItemClickListener(this);
+            popupMenu.show();
+        }
 
-//        @Override
-//        public boolean onMenuItemClick(MenuItem menuItem) {
-//            int itemId = menuItem.getItemId();
-//
-//            if (itemId == R.id.action_popup_edit) {
-//                Intent intent = new Intent(context, UpdateObservation.class);
-//                intent.putExtra("obsId", String.valueOf(obsId.get(getBindingAdapterPosition())));
-//                intent.putExtra("hikeId", hikeId);
-//                intent.putExtra("text", String.valueOf(obsText.get(getBindingAdapterPosition())));
-//                intent.putExtra("time", String.valueOf(obsTime.get(getBindingAdapterPosition())));
-//                intent.putExtra("comment", String.valueOf(obsComment.get(getBindingAdapterPosition())));
-//                intent.putExtra("date", obsDate);
-//                context.startActivity(intent);
-//                return true;
-//            } else {
-//                confirmDialog(String.valueOf(obsText.get(getBindingAdapterPosition())));
-//                return true;
-//            }
-//        }
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            int itemId = menuItem.getItemId();
+            final ObservationModel observation  = observations.get(getBindingAdapterPosition());
+            if (itemId == R.id.action_popup_edit) {
+
+                Intent intent = new Intent(context, UpdateObservation.class);
+                intent.putExtra("obsId", String.valueOf(observation.obsId));
+                intent.putExtra("hikeId", hikeId);
+                intent.putExtra("text", String.valueOf(observation.obsText));
+                intent.putExtra("time", String.valueOf(observation.obsTime));
+                intent.putExtra("comment", String.valueOf(observation.obsComment));
+                intent.putExtra("date", obsDate);
+                context.startActivity(intent);
+                return true;
+            } else {
+                confirmDialog(String.valueOf(observation.obsText));
+                return true;
+            }
+        }
 
         void confirmDialog(String nameHike) {
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
