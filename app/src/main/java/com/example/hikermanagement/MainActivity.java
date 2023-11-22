@@ -55,16 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         databaseHelper = new DatabaseHelper(MainActivity.this);
         hikes = new ArrayList<>();
-//        name = new ArrayList<>();
-//        location = new ArrayList<>();
-//        date = new ArrayList<>();
-//        difficulty = new ArrayList<>();
-//        length = new ArrayList<>();
-//        isParking = new ArrayList<>();
-//        description = new ArrayList<>();
-
         StoreData();
-//        hikeAdapter = new HikeAdapter(MainActivity.this, id, name, location, date, isParking, length, difficulty, description);
         hikeAdapter = new HikeAdapter(MainActivity.this, hikes);
         recyclerView.setAdapter(hikeAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
@@ -135,9 +126,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 databaseHelper.deleteAll();
-
                 hikes.clear();
-
                 hikeAdapter.notifyDataSetChanged();
             }
         });

@@ -16,22 +16,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "HikerManagement.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String TABLE_HIKES = "hikes";
-    private static final String ID = "_id";
-    private static final String NAME = "name";
-    private static final String LOCATION = "location";
-    private static final String DAY_OF_HIKE = "day_of_hike";
-    private static final String PARKING = "parking";
-    private static final String LENGTH = "length_of_hike";
-    private static final String DIFFICULTY = "difficulty";
-    private static final String DESCRIPTION = "description";
+    private static final String TABLE_HIKES_MANAGEMENT = "hikes_management";
+    private static final String ID = "id";
+    private static final String TITLE = "title";
+    private static final String LOCATION_HIKE = "location_hike";
+    private static final String DATE_HIKE = "date_hike";
+    private static final String ISPARKING = "is_parking";
+    private static final String LENGTH_HIKE = "length_hike";
+    private static final String DIFFICULTY_HIKE= "difficulty_hike";
+    private static final String DESCRIPTION_HIKE = "description_hike";
 
-    private static final String TABLE_OBSERVATIONS = "observations";
-    private static final String OBSERVATION_ID = "observation_id";
-    private static final String HIKE_ID = "hike_id";
-    private static final String OBSERVATION_TEXT = "observation_text";
-    private static final String OBSERVATION_TIME = "observation_time";
-    private static final String ADDITIONAL_COMMENTS = "additional_comments";
+    private static final String TABLE_OBSERVATIONS_OF_HIKE = "observations_of_hike";
+    private static final String ID_OBSERVATION = "id_observation";
+    private static final String ID_HIKE = "hike_id";
+    private static final String TEXT_OBSERVATION = "text_observation";
+    private static final String TIME_OBSERVATION = "time_observation";
+    private static final String COMMENTS = "comments";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -41,23 +41,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String hike_query =
-                "CREATE TABLE " + TABLE_HIKES +
+                "CREATE TABLE " + TABLE_HIKES_MANAGEMENT +
                         " (" + ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        NAME + " TEXT, " +
-                        LOCATION + " TEXT, " +
-                        DAY_OF_HIKE + " TEXT, " +
-                        PARKING + " TEXT, " +
-                        LENGTH + " TEXT, " +
-                        DIFFICULTY + " TEXT, " +
-                        DESCRIPTION + " TEXT) ;";
+                        TITLE + " TEXT, " +
+                        LOCATION_HIKE + " TEXT, " +
+                        DATE_HIKE + " TEXT, " +
+                        ISPARKING + " TEXT, " +
+                        LENGTH_HIKE + " TEXT, " +
+                        DIFFICULTY_HIKE + " TEXT, " +
+                        DESCRIPTION_HIKE + " TEXT) ;";
 
         String observation_query =
-                "CREATE TABLE " + TABLE_OBSERVATIONS +
-                        " (" + OBSERVATION_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        HIKE_ID + " INTEGER, " +
-                        OBSERVATION_TEXT + " TEXT, " +
-                        OBSERVATION_TIME + " TEXT, " +
-                        ADDITIONAL_COMMENTS + " TEXT) ;";
+                "CREATE TABLE " + TABLE_OBSERVATIONS_OF_HIKE +
+                        " (" + ID_OBSERVATION + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        ID_HIKE + " INTEGER, " +
+                        TEXT_OBSERVATION + " TEXT, " +
+                        TIME_OBSERVATION + " TEXT, " +
+                        COMMENTS + " TEXT) ;";
 
         db.execSQL(hike_query);
         db.execSQL(observation_query);
@@ -65,8 +65,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HIKES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OBSERVATIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_HIKES_MANAGEMENT);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_OBSERVATIONS_OF_HIKE);
         onCreate(db);
     }
 
@@ -76,15 +76,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(NAME, name);
-        cv.put(LOCATION, location);
-        cv.put(DAY_OF_HIKE, date);
-        cv.put(LENGTH, length);
-        cv.put(DIFFICULTY, difficulty);
-        cv.put(DESCRIPTION, description);
-        cv.put(PARKING, parking);
+        cv.put(TITLE, name);
+        cv.put(LOCATION_HIKE, location);
+        cv.put(DATE_HIKE, date);
+        cv.put(LENGTH_HIKE, length);
+        cv.put(DIFFICULTY_HIKE, difficulty);
+        cv.put(DESCRIPTION_HIKE, description);
+        cv.put(ISPARKING, parking);
 
-        long result = db.insert(TABLE_HIKES, null, cv);
+        long result = db.insert(TABLE_HIKES_MANAGEMENT, null, cv);
 
         if(result == -1){
             Toast.makeText(context, "Added Failed !", Toast.LENGTH_SHORT).show();
@@ -94,7 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     Cursor readAllData() {
-        String query = "SELECT * FROM " + TABLE_HIKES;
+        String query = "SELECT * FROM " + TABLE_HIKES_MANAGEMENT;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
@@ -109,15 +109,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(NAME, name);
-        cv.put(LOCATION, location);
-        cv.put(DAY_OF_HIKE, date);
-        cv.put(LENGTH, length);
-        cv.put(DIFFICULTY, difficulty);
-        cv.put(DESCRIPTION, description);
-        cv.put(PARKING, parking);
+        cv.put(TITLE, name);
+        cv.put(LOCATION_HIKE, location);
+        cv.put(DATE_HIKE, date);
+        cv.put(LENGTH_HIKE, length);
+        cv.put(DIFFICULTY_HIKE, difficulty);
+        cv.put(DESCRIPTION_HIKE, description);
+        cv.put(ISPARKING, parking);
 
-        long result = db.update(TABLE_HIKES, cv, "_id=?", new String[]{id});
+        long result = db.update(TABLE_HIKES_MANAGEMENT, cv, "_id=?", new String[]{id});
         if(result == -1){
             Toast.makeText(context, "Updated Failed !", Toast.LENGTH_SHORT).show();
         }else {
@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     void deleteOne(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_HIKES, "_id=?", new String[]{id});
+        long result = db.delete(TABLE_HIKES_MANAGEMENT, "_id=?", new String[]{id});
         if(result == -1){
             Toast.makeText(context, "Deleted Failed !", Toast.LENGTH_SHORT).show();
         }else {
@@ -137,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     void deleteAll(){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_HIKES);
+        db.execSQL("DELETE FROM " + TABLE_HIKES_MANAGEMENT);
     }
 
     //observation
@@ -145,12 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
 
-        cv.put(HIKE_ID, hike_id);
-        cv.put(OBSERVATION_TEXT, observation_text);
-        cv.put(OBSERVATION_TIME, observation_time);
-        cv.put(ADDITIONAL_COMMENTS, observation_comment);
+        cv.put(ID_HIKE, hike_id);
+        cv.put(TEXT_OBSERVATION, observation_text);
+        cv.put(TIME_OBSERVATION, observation_time);
+        cv.put(COMMENTS, observation_comment);
 
-        long result = db.insert(TABLE_OBSERVATIONS, null, cv);
+        long result = db.insert(TABLE_OBSERVATIONS_OF_HIKE, null, cv);
 
         if(result == -1){
             Toast.makeText(context, "Added Failed !", Toast.LENGTH_SHORT).show();
@@ -160,7 +160,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     Cursor readAllObservation(int hikeId) {
-        String query = "SELECT * FROM " + TABLE_OBSERVATIONS + " WHERE " + HIKE_ID + " = " + hikeId;
+        String query = "SELECT * FROM " + TABLE_OBSERVATIONS_OF_HIKE + " WHERE " + ID_HIKE + " = " + hikeId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = null;
         if(db != null) {
@@ -172,12 +172,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     void updateObservation(String id,int hike_id, String observation_text, String observation_time, String observation_comment) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(HIKE_ID, hike_id);
-        cv.put(OBSERVATION_TEXT, observation_text);
-        cv.put(OBSERVATION_TIME, observation_time);
-        cv.put(ADDITIONAL_COMMENTS, observation_comment);
+        cv.put(ID_HIKE, hike_id);
+        cv.put(TEXT_OBSERVATION, observation_text);
+        cv.put(TIME_OBSERVATION, observation_time);
+        cv.put(COMMENTS, observation_comment);
 
-        long result = db.update(TABLE_OBSERVATIONS, cv, "observation_id=?", new String[]{id});
+        long result = db.update(TABLE_OBSERVATIONS_OF_HIKE, cv, "observation_id=?", new String[]{id});
         if(result == -1){
             Toast.makeText(context, "Updated Failed !", Toast.LENGTH_SHORT).show();
         }else {
@@ -187,7 +187,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     void deleteOneObservation(String id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        long result = db.delete(TABLE_OBSERVATIONS, "observation_id=?", new String[]{id});
+        long result = db.delete(TABLE_OBSERVATIONS_OF_HIKE, "observation_id=?", new String[]{id});
         if(result == -1){
             Toast.makeText(context, "Deleted Failed !", Toast.LENGTH_SHORT).show();
         }else {
